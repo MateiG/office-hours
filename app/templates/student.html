@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <h2 class="text-center mb-4">Welcome, {{ name }}</h2>
+        <p>Refresh the page to see updates to your ticket.</p>
+
+        {% if user_ticket %}
+        {% if user_ticket.status == 'in progress' %}
+        <div class="alert alert-success" role="alert">
+            {% if user_ticket.location.lower() == 'online'%}
+            Your ticket is now being helped by {{ user_ticket.helped_by_name }}! Please join the Zoom meeting at <a href="{{ zoom_link }}" target="_blank"
+                class="alert-link">this link</a>.
+            {% else %}
+            Your ticket is now being helped {{ user_ticket.helped_by_name }}! Please wait for the TA to find you.
+            {% endif %}
+        </div>
+        {% endif %}
+        <div class="card mt-4">
+            <div class="card-header">
+                Your Current Ticket
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">{{ user_ticket.assignment }}</h5>
+                <p class="card-text">
+                    Status: {{ user_ticket.status.capitalize() }}<br>
+                    Position in Queue: {{ num_in_queue }}<br>
+                    Location: {{ user_ticket.location }}<br>
+                    Description: {{ user_ticket.description }}<br>
+                    Created: {{ user_ticket.time_ago }}<br>
+                </p>
+                <form action="{{ url_for('delete_ticket') }}" method="POST">
+                    <input type="hidden" name="ticket_id" value="{{ user_ticket.id }}">
+                    <button type="submit" class="btn btn-danger">Delete Ticket</button>
+                </form>
+            </div>
+        </div>
+        {% elif queue_status == 'open' %}
+        <form action="{{ url_for('student_page') }}" method="POST" class="mt-4">
+            <h3 class="text-center mb-3">Create a New Ticket</h3>
+            <div class="mb-3">
+                <label for="location" class="form-label">Location</label>
+                <select class="form-select" id="location" name="location" required>
+                    {% for location in locations %}
+                    <option value="{{ location }}">{{ location }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="assignment" class="form-label">Assignment</label>
+                <select class="form-select" id="assignment" name="assignment" required>
+                    {% for assignment in assignments %}
+                    <option value="{{ assignment }}">{{ assignment }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <small class="form-text text-muted d-block mb-1">Which question is this about and describe the problem
+                    you're facing. Max 100 characters.</small>
+                <textarea class="form-control" id="description" name="description" rows="2" maxlength="100"
+                    required></textarea>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Create Ticket</button>
+            </div>
+        </form>
+        {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            The queue is currently closed. Please check back later to create a new ticket.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
