@@ -76,7 +76,7 @@ def resolve_ticket():
     os.makedirs("data/tickets", exist_ok=True)
     ticket_path = os.path.join("data/tickets", f"{ticket_id}.json")
     with open(ticket_path, "w") as f:
-        json.dump(ticket, f)
+        json.dump(ticket, f, indent=4)
     return redirect(url_for("admin_page"))
 
 
