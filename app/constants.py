@@ -10,7 +10,7 @@ ZOOM_LINK = "http://google.com"
 
 users = {}
 os.makedirs("data", exist_ok=True)
-if os.path.exists("data/users.json"):
+if os.path.exists("data/users.csv"):
     with open("data/users.csv") as f:
         reader = csv.reader(f)
         for row in reader:
