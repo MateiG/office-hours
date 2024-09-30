@@ -1,3 +1,4 @@
+import csv
 import json
 import os
 import smtplib
@@ -7,8 +8,6 @@ from email.mime.text import MIMEText
 
 from dotenv import load_dotenv
 from redis import Redis
-
-from app.constants import users
 
 redis_client = Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
@@ -113,3 +112,24 @@ def resolve_ticket(ticket_id):
 
 def delete_ticket(ticket_id):
     redis_client.delete(f"ticket:{ticket_id}")
+
+
+def load_users(path="data/users.csv"):
+    users = {}
+    if os.path.exists(path):
+        with open(path) as f:
+            reader = csv.reader(f)
+            next(reader)  # Skip header
+            for row in reader:
+                name = row[0].strip() + " " + row[1].strip()
+                email = row[3].strip().lower()
+                role = row[4].strip().lower()
+                users[email] = {
+                    "name": name,
+                    "email": email,
+                    "role": role,
+                }
+    num_admins = len([user for user in users.values() if user["role"] == "admin"])
+    num_students = len([user for user in users.values() if user["role"] == "student"])
+    print(f"Loaded {num_admins} admins and {num_students} students.")
+    return users

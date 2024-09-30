@@ -4,8 +4,8 @@ from datetime import datetime
 
 from flask import flash, redirect, render_template, request, session, url_for
 
-from app import app, utils
-from app.constants import ZOOM_LINK, users
+from app import app, users, utils
+from app.constants import ZOOM_LINK
 
 
 @app.route("/admin")
@@ -29,7 +29,7 @@ def open_queue():
         return redirect(url_for("index"))
 
     utils.set_queue_status("open")
-    flash("Office hours are now open")
+    flash("Office hours are now open.")
     return redirect(url_for("admin_page"))
 
 
@@ -39,7 +39,7 @@ def close_queue():
         return redirect(url_for("index"))
 
     utils.set_queue_status("closed")
-    flash("Office hours are now closed")
+    flash("Office hours are now closed.")
     return redirect(url_for("admin_page"))
 
 

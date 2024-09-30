@@ -3,8 +3,7 @@ from datetime import datetime, timedelta
 
 from flask import flash, redirect, render_template, request, session, url_for
 
-from app import app, utils
-from app.constants import users
+from app import app, users, utils
 from app.routes.common import clear_session
 
 

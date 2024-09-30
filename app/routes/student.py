@@ -1,7 +1,7 @@
 from flask import flash, redirect, render_template, request, session, url_for
 
-from app import app, utils
-from app.constants import ASSIGNMENTS, LOCATIONS, users
+from app import app, users, utils
+from app.constants import ASSIGNMENTS, LOCATIONS
 
 
 @app.route("/student", methods=["GET", "POST"])
