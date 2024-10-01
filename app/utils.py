@@ -9,6 +9,8 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 from redis import Redis
 
+from app import constants
+
 redis_client = Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
 load_dotenv()
@@ -114,7 +116,8 @@ def delete_ticket(ticket_id):
     redis_client.delete(f"ticket:{ticket_id}")
 
 
-def load_users(path="data/users.csv"):
+def load_users():
+    path = constants.ROSTER_PATH
     users = {}
     if os.path.exists(path):
         with open(path) as f:

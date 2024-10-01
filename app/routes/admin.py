@@ -4,8 +4,7 @@ from datetime import datetime
 
 from flask import flash, redirect, render_template, request, session, url_for
 
-from app import app, users, utils
-from app.constants import ZOOM_LINK
+from app import app, users, utils, constants
 
 
 @app.route("/admin")
@@ -59,7 +58,7 @@ def assign_ticket():
 
     if ticket["location"].lower() == "online":
         subject = "CS188 Office Hours Ticket Update"
-        student_body = f"Your ticket is now being helped by {users[admin_email]['name']} ({admin_email}). \nJoin the Zoom meeting at {ZOOM_LINK}."
+        student_body = f"Your ticket is now being helped by {users[admin_email]['name']} ({admin_email}). \nJoin the Zoom meeting at {constants.ZOOM_LINK}."
         utils.send_email(ticket["email"], subject, student_body)
 
     return redirect(url_for("admin_page"))
@@ -87,4 +86,14 @@ def requeue_ticket():
 
     ticket_id = request.form.get("ticket_id")
     ticket = utils.unhelp_ticket(ticket_id)
+    return redirect(url_for("admin_page"))
+
+
+@app.route("/admin/reload_roster", methods=["GET"])
+def reload_roster():
+    if "user" not in session or session["user"]["role"] != "admin":
+        return redirect(url_for("index"))
+
+    users = utils.load_users()
+    flash("Roster reloaded.")
     return redirect(url_for("admin_page"))

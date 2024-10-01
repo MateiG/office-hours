@@ -7,3 +7,5 @@ ASSIGNMENTS = [f"Homework {i}" for i in range(1, 11)] + [
 ]
 LOCATIONS = ["Online", "Inside Soda 341B", "Outside Soda 341B"]
 ZOOM_LINK = "http://google.com"
+
+ROSTER_PATH = "data/CS188_Fall_2024_roster.csv"

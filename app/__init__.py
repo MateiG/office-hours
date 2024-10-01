@@ -9,7 +9,7 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "you-will-never-guess")
 
 from app import constants, utils
 
-users = utils.load_users(path="data/CS188_Fall_2024_roster.csv")
+users = utils.load_users()
 
 
 @app.context_processor
