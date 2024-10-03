@@ -9,9 +9,12 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "you-will-never-guess")
 
 
 @app.before_request
-def check_admin_auth():
+def check_auth():
     if request.path.startswith("/admin"):
         if "user" not in session or session["user"]["role"] != "admin":
+            return redirect(url_for("index"))
+    elif request.path.startswith("/student"):
+        if "user" not in session or session["user"]["role"] != "student":
             return redirect(url_for("index"))
 
 

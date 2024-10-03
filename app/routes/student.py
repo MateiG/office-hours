@@ -6,9 +6,6 @@ from app.constants import ASSIGNMENTS, LOCATIONS
 
 @app.route("/student", methods=["GET", "POST"])
 def student_page():
-    if "user" not in session or session["user"]["role"] != "student":
-        return redirect(url_for("index"))
-
     email = session["user"]["email"]
     user_ticket = None
     for ticket in utils.get_tickets(["waiting", "in progress"]):
