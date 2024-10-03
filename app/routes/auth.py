@@ -7,6 +7,18 @@ from app import app, users, utils
 from app.routes.common import clear_session
 
 
+@app.before_request
+def check_auth():
+    if request.path.startswith("/admin"):
+        if "user" not in session or session["user"]["role"] != "admin":
+            flash("You must be an admin to access that page.")
+            return redirect(url_for("index"))
+    elif request.path.startswith("/student"):
+        if "user" not in session or session["user"]["role"] != "student":
+            flash("You must be a student to access that page.")
+            return redirect(url_for("index"))
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     if "user" in session:
