@@ -5,13 +5,15 @@
     <div class="col-md-8 col-lg-6">
         <h2 class="text-center mb-4">Welcome, {{ name }}</h2>
         <p>Refresh the page to see updates to your ticket.</p>
+        <p>After making an online ticket, please join the Zoom waiting room at <a href="{{ zoom_link }}" target="_blank"
+                class="alert-link">this link</a>.</p>
 
         {% if user_ticket %}
         {% if user_ticket.status == 'in progress' %}
         <div class="alert alert-success" role="alert">
             {% if user_ticket.location.lower() == 'online'%}
-            Your ticket is now being helped by {{ user_ticket.helped_by_name }}! Please join the Zoom meeting at <a href="{{ zoom_link }}" target="_blank"
-                class="alert-link">this link</a>.
+            Your ticket is now being helped by {{ user_ticket.helped_by_name }}! Please join the Zoom meeting using the
+            link above.
             {% else %}
             Your ticket is now being helped by {{ user_ticket.helped_by_name }}! Please wait for the TA to find you.
             {% endif %}
@@ -25,12 +27,13 @@
                 <h5 class="card-title">{{ user_ticket.assignment }}</h5>
                 <p class="card-text">
                     Status: {{ user_ticket.status.capitalize() }}<br>
-                    Position in Queue: {{ num_in_queue }}<br>
+                    Position in queue: {{ num_in_queue }}<br>
                     Location: {{ user_ticket.location }}<br>
                     Description: {{ user_ticket.description }}<br>
                     Created: {{ user_ticket.time_ago }}<br>
                 </p>
-                <form action="{{ url_for('delete_ticket') }}" method="POST">
+                <form action="{{ url_for('delete_ticket') }}" method="POST"
+                    onsubmit="return confirm('Are you sure you want to delete this ticket? This action cannot be undone');">
                     <input type="hidden" name="ticket_id" value="{{ user_ticket.id }}">
                     <button type="submit" class="btn btn-danger">Delete Ticket</button>
                 </form>
@@ -56,11 +59,9 @@
                 </select>
             </div>
             <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <small class="form-text text-muted d-block mb-1">Which question is this about and describe the problem
-                    you're facing. Max 100 characters.</small>
-                <textarea class="form-control" id="description" name="description" rows="2" maxlength="100"
-                    required></textarea>
+                <label for="description" class="form-label">Description (max 100 characters)</label>
+                <textarea class="form-control" id="description" name="description" rows="2" maxlength="100" required
+                    placeholder="Enter the question number and a description of the problem you're facing."></textarea>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-primary">Create Ticket</button>

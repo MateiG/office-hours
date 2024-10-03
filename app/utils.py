@@ -74,13 +74,13 @@ def get_ticket(id):
     return ticket
 
 
-def get_tickets(status_list: list):
+def get_tickets(status_list: list, sort_key="time_created"):
     tickets = []
     for key in redis_client.scan_iter(match="ticket:*"):
         ticket = get_ticket(key.split(":")[1])
         if ticket["status"] in status_list:
             tickets.append(ticket)
-    tickets.sort(key=lambda x: x["time_created"])
+    tickets.sort(key=lambda x: x[sort_key])
     return tickets
 
 
@@ -108,6 +108,14 @@ def resolve_ticket(ticket_id):
     ticket = get_ticket(ticket_id)
     ticket["status"] = "resolved"
     ticket["time_resolved"] = datetime.now().isoformat()
+    redis_client.set(f"ticket:{ticket_id}", json.dumps(ticket))
+    return ticket
+
+
+def unresolve_ticket(ticket_id):
+    ticket = get_ticket(ticket_id)
+    ticket["status"] = "in progress"
+    ticket["time_resolved"] = ""
     redis_client.set(f"ticket:{ticket_id}", json.dumps(ticket))
     return ticket
 

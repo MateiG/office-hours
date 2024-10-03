@@ -9,14 +9,17 @@ def delete_ticket():
         return redirect(url_for("index"))
 
     ticket_id = request.form.get("ticket_id")
-    email = session["user"]["email"]
-    is_admin = users[email]["role"] == "admin"
+    current_email = session["user"]["email"]
+    is_admin = users[current_email]["role"] == "admin"
 
     ticket = utils.get_ticket(ticket_id)
 
-    if ticket["email"] == email or is_admin:
+    if ticket["email"] == current_email:
         utils.delete_ticket(ticket_id)
-        flash("Ticket deleted successfully!")
+        flash("Your ticket has been deleted.")
+    elif is_admin:
+        utils.delete_ticket(ticket_id)
+        flash(f"{ticket['name']}'s ticket has been deleted.")
     else:
         flash("You don't have permission to delete this ticket.")
 

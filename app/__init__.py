@@ -29,6 +29,7 @@ def inject_info():
 
 from app import constants, utils
 
+os.makedirs("data/tickets", exist_ok=True)
 users = utils.load_users()
 
 from app import routes
