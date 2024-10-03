@@ -117,12 +117,11 @@ def delete_ticket(ticket_id):
 
 
 def load_users():
-    path = constants.ROSTER_PATH
     users = {}
-    if os.path.exists(path):
-        with open(path) as f:
+    if os.path.exists(constants.ROSTER_PATH):
+        with open(constants.ROSTER_PATH) as f:
             reader = csv.reader(f)
-            next(reader)  # Skip header
+            next(reader)
             for row in reader:
                 name = row[0].strip() + " " + row[1].strip()
                 email = row[3].strip().lower()

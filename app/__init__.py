@@ -1,15 +1,18 @@
 import csv
 import os
 
-from flask import Flask
+from flask import Flask, redirect, request, session, url_for
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "you-will-never-guess")
 
-from app import constants, utils
 
-users = utils.load_users()
+@app.before_request
+def check_admin_auth():
+    if request.path.startswith("/admin"):
+        if "user" not in session or session["user"]["role"] != "admin":
+            return redirect(url_for("index"))
 
 
 @app.context_processor
@@ -20,5 +23,9 @@ def inject_info():
         zoom_link=constants.ZOOM_LINK,
     )
 
+
+from app import constants, utils
+
+users = utils.load_users()
 
 from app import routes

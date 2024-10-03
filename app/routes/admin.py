@@ -1,17 +1,13 @@
 import json
 import os
-from datetime import datetime
 
 from flask import flash, redirect, render_template, request, session, url_for
 
-from app import app, users, utils, constants
+from app import app, constants, users, utils
 
 
 @app.route("/admin")
 def admin_page():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     in_progress_tickets = utils.get_tickets(["in progress"])
     waiting_tickets = utils.get_tickets(["waiting"])
     return render_template(
@@ -24,9 +20,6 @@ def admin_page():
 
 @app.route("/admin/open_queue", methods=["POST"])
 def open_queue():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     utils.set_queue_status("open")
     flash("Office hours are now open.")
     return redirect(url_for("admin_page"))
@@ -34,9 +27,6 @@ def open_queue():
 
 @app.route("/admin/close_queue", methods=["POST"])
 def close_queue():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     utils.set_queue_status("closed")
     flash("Office hours are now closed.")
     return redirect(url_for("admin_page"))
@@ -44,9 +34,6 @@ def close_queue():
 
 @app.route("/admin/assign_ticket", methods=["POST"])
 def assign_ticket():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     ticket_id = request.form.get("ticket_id")
     admin_email = session["user"]["email"]
     admin_name = users[admin_email]["name"]
@@ -66,9 +53,6 @@ def assign_ticket():
 
 @app.route("/admin/resolve_ticket", methods=["POST"])
 def resolve_ticket():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     ticket_id = request.form.get("ticket_id")
     ticket = utils.resolve_ticket(ticket_id)
 
@@ -81,9 +65,6 @@ def resolve_ticket():
 
 @app.route("/admin/requeue_ticket", methods=["POST"])
 def requeue_ticket():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     ticket_id = request.form.get("ticket_id")
     ticket = utils.unhelp_ticket(ticket_id)
     return redirect(url_for("admin_page"))
@@ -91,9 +72,6 @@ def requeue_ticket():
 
 @app.route("/admin/reload_roster", methods=["GET"])
 def reload_roster():
-    if "user" not in session or session["user"]["role"] != "admin":
-        return redirect(url_for("index"))
-
     users = utils.load_users()
     flash("Roster reloaded.")
     return redirect(url_for("admin_page"))
