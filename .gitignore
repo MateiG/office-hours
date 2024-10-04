@@ -5,3 +5,4 @@ venv/
 data/*.*
 data/tickets/*.json
 dump.rdb
+*.log
