@@ -2,8 +2,7 @@ import csv
 import os
 import traceback
 
-from flask import (Flask, jsonify, redirect, render_template, request, session,
-                   url_for)
+from flask import Flask, jsonify, redirect, render_template, request, session, url_for
 
 from app import constants, utils
 
@@ -26,6 +25,7 @@ def inject_info():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
+    print(f"URL: {request.url}")
     app.logger.error(traceback.format_exc())
 
     return render_template("error.html", error="An unexpected error occurred"), 500
