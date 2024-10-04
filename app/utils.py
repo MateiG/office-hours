@@ -153,7 +153,4 @@ def load_users():
                     "email": email,
                     "role": role,
                 }
-    num_admins = len([user for user in users.values() if user["role"] == "admin"])
-    num_students = len([user for user in users.values() if user["role"] == "student"])
-    print(f"Loaded {num_admins} admins and {num_students} students.")
     return users

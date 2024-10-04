@@ -12,6 +12,9 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "you-will-never-guess")
 
 os.makedirs("data/tickets", exist_ok=True)
 users = utils.load_users()
+num_admins = len([user for user in users.values() if user["role"] == "admin"])
+num_students = len([user for user in users.values() if user["role"] == "student"])
+app.logger.info(f"Loaded {num_admins} admins and {num_students} students.")
 
 
 @app.context_processor
@@ -25,7 +28,7 @@ def inject_info():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    print(f"URL: {request.url}")
+    app.logger.info(f"URL: {request.url}")
     app.logger.error(traceback.format_exc())
 
     return render_template("error.html", error="An unexpected error occurred"), 500
