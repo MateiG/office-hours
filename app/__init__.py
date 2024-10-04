@@ -25,7 +25,7 @@ def inject_info():
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    print(f"URL: {request.url}", flush=True)
+    print(f"URL: {request.url}")
     app.logger.error(traceback.format_exc())
 
     return render_template("error.html", error="An unexpected error occurred"), 500
