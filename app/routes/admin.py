@@ -87,10 +87,3 @@ def requeue_ticket():
 
     flash(f"{ticket["name"]}'s ticket has been requeued.")
     return redirect(url_for("admin_page"))
-
-
-@app.route("/admin/reload_roster", methods=["GET"])
-def reload_roster():
-    users = utils.load_users()
-    flash("Roster reloaded.")
-    return redirect(url_for("admin_page"))

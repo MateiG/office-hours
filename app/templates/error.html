@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+</head>
+
+<body>
+    <h3>It seems that something went wrong.</h3>
+    <img src="{{url_for('static', filename='images/confused_minion.webp')}}" width="200" height="200"
+        alt="Confused Minion">
+    <p>Please try the following steps:</p>
+    <ol>
+        <li>Ensure you're trying to access a valid page. <a href="{{url_for('index')}}">Click here</a> to go to the
+            homepage.</li>
+        <li>Refresh the page</li>
+        <li>Check your internet connection</li>
+        <li>Clear your browser history</li>
+        <li>Try a different browser</li>
+    </ol>
+    <p>Please contact <a href="mailto:cs188@berkeley.edu">cs188@berkeley.edu</a> if you continue to experience issues.
+    </p>
+</body>
+
+</html>

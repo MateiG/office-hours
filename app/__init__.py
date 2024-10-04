@@ -1,7 +1,9 @@
 import csv
 import os
+import traceback
 
-from flask import Flask, redirect, request, session, url_for
+from flask import (Flask, jsonify, redirect, render_template, request, session,
+                   url_for)
 
 from app import constants, utils
 
@@ -15,10 +17,18 @@ users = utils.load_users()
 
 @app.context_processor
 def inject_info():
-    return dict(
-        ticket_count=len(utils.get_tickets(["waiting", "in progress"])),
-        queue_status=utils.get_queue_status(),
-        zoom_link=constants.ZOOM_LINK,
-    )
+    return {
+        "queue_status": utils.get_queue_status(),
+        "ticket_count": len(utils.get_tickets(["waiting", "in progress"])),
+        "zoom_link": constants.ZOOM_LINK,
+    }
+
+
+@app.errorhandler(Exception)
+def handle_exception(e):
+    app.logger.error(traceback.format_exc())
+
+    return render_template("error.html", error="An unexpected error occurred"), 500
+
 
 from app import routes
