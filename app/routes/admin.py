@@ -44,6 +44,9 @@ def assign_ticket():
         admin_email,
         admin_name,
     )
+    if not ticket:
+        flash("Ticket not found. It may have been deleted.")
+        return redirect(url_for("admin_page"))
 
     if ticket["location"].lower() == "online":
         subject = "CS188 Office Hours Ticket Update"
@@ -58,6 +61,9 @@ def assign_ticket():
 def resolve_ticket():
     ticket_id = request.form.get("ticket_id")
     ticket = utils.resolve_ticket(ticket_id)
+    if not ticket:
+        flash("Ticket not found. It may have been deleted.")
+        return redirect(url_for("admin_page"))
 
     ticket_path = os.path.join("data/tickets", f"{ticket_id}.json")
     with open(ticket_path, "w") as f:
@@ -71,6 +77,10 @@ def resolve_ticket():
 def unresolve_ticket():
     ticket_id = request.form.get("ticket_id")
     ticket = utils.unresolve_ticket(ticket_id)
+    if not ticket:
+        flash("Ticket not found. It may have been deleted.")
+        return redirect(url_for("admin_page"))
+
 
     ticket_path = os.path.join("data/tickets", f"{ticket_id}.json")
     if os.path.exists(ticket_path):
@@ -84,6 +94,9 @@ def unresolve_ticket():
 def requeue_ticket():
     ticket_id = request.form.get("ticket_id")
     ticket = utils.unhelp_ticket(ticket_id)
+    if not ticket:
+        flash("Ticket not found. It may have been deleted.")
+        return redirect(url_for("admin_page"))
 
     flash(f"{ticket["name"]}'s ticket has been requeued.")
     return redirect(url_for("admin_page"))

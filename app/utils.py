@@ -60,7 +60,11 @@ def create_ticket(name, email, location, assignment, description):
 
 
 def get_ticket(id):
-    ticket = json.loads(redis_client.get(f"ticket:{id}"))
+    ticket = redis_client.get(f"ticket:{id}")
+    if not ticket:
+        return None
+
+    ticket = json.loads(ticket)
     time_diff = datetime.now() - datetime.fromisoformat(ticket["time_created"])
     if time_diff < timedelta(minutes=1):
         ticket["time_ago"] = f"{time_diff.seconds} seconds ago"
@@ -78,6 +82,8 @@ def get_tickets(status_list: list, sort_key="time_created"):
     tickets = []
     for key in redis_client.scan_iter(match="ticket:*"):
         ticket = get_ticket(key.split(":")[1])
+        if not ticket:
+            continue
         if ticket["status"] in status_list:
             tickets.append(ticket)
     tickets.sort(key=lambda x: x[sort_key])
@@ -86,6 +92,8 @@ def get_tickets(status_list: list, sort_key="time_created"):
 
 def help_ticket(ticket_id, email, name):
     ticket = get_ticket(ticket_id)
+    if not ticket:
+        return None
     ticket["status"] = "in progress"
     ticket["helped_by"] = email
     ticket["helped_by_name"] = name
@@ -96,6 +104,8 @@ def help_ticket(ticket_id, email, name):
 
 def unhelp_ticket(ticket_id):
     ticket = get_ticket(ticket_id)
+    if not ticket:
+        return None
     ticket["status"] = "waiting"
     ticket["helped_by"] = ""
     ticket["helped_by_name"] = ""
@@ -106,6 +116,8 @@ def unhelp_ticket(ticket_id):
 
 def resolve_ticket(ticket_id):
     ticket = get_ticket(ticket_id)
+    if not ticket:
+        return None
     ticket["status"] = "resolved"
     ticket["time_resolved"] = datetime.now().isoformat()
     redis_client.set(f"ticket:{ticket_id}", json.dumps(ticket))
@@ -114,6 +126,8 @@ def resolve_ticket(ticket_id):
 
 def unresolve_ticket(ticket_id):
     ticket = get_ticket(ticket_id)
+    if not ticket:
+        return None
     ticket["status"] = "in progress"
     ticket["time_resolved"] = ""
     redis_client.set(f"ticket:{ticket_id}", json.dumps(ticket))
