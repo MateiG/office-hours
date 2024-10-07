@@ -10,7 +10,6 @@ app = Flask(__name__)
 app.url_map.strict_slashes = False
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "you-will-never-guess")
 
-os.makedirs("data/tickets", exist_ok=True)
 users = utils.load_users()
 num_admins = len([user for user in users.values() if user["role"] == "admin"])
 num_students = len([user for user in users.values() if user["role"] == "student"])
