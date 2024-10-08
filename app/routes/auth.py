@@ -51,11 +51,7 @@ def index():
         else:
             flash("Invalid email.")
 
-    ticket_count = len(utils.get_tickets(["waiting", "in progress"]))
-    queue_status = utils.get_queue_status()
-    return render_template(
-        "index.html", ticket_count=ticket_count, queue_status=queue_status
-    )
+    return render_template("login.html")
 
 
 @app.route("/verify_code", methods=["GET", "POST"])
