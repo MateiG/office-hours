@@ -13,10 +13,10 @@
             <button type="submit" class="btn btn-primary">Verify</button>
         </form>
         <div class="mt-3">
-            <form action="{{ url_for('resend_code') }}" method="POST" class="d-inline">
+            <form action="{{ url_for('auth.resend_code') }}" method="POST" class="d-inline">
                 <button type="submit" class="btn btn-secondary">Resend Code</button>
             </form>
-            <form action="{{ url_for('cancel_verification') }}" method="POST" class="d-inline">
+            <form action="{{ url_for('auth.cancel_verification') }}" method="POST" class="d-inline">
                 <button type="submit" class="btn btn-danger">Cancel</button>
             </form>
         </div>

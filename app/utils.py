@@ -136,21 +136,3 @@ def unresolve_ticket(ticket_id):
 
 def delete_ticket(ticket_id):
     redis_client.delete(f"ticket:{ticket_id}")
-
-
-def load_users():
-    users = {}
-    if os.path.exists(constants.ROSTER_PATH):
-        with open(constants.ROSTER_PATH) as f:
-            reader = csv.reader(f)
-            next(reader)
-            for row in reader:
-                name = row[0].strip() + " " + row[1].strip()
-                email = row[3].strip().lower()
-                role = row[4].strip().lower()
-                users[email] = {
-                    "name": name,
-                    "email": email,
-                    "role": role,
-                }
-    return users
