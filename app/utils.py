@@ -78,7 +78,7 @@ def get_ticket(id):
     return ticket
 
 
-def get_tickets(status_list: list, sort_key="time_created"):
+def get_tickets(status_list: list, sort_key="time_created", reverse=False):
     tickets = []
     for key in redis_client.scan_iter(match="ticket:*"):
         ticket = get_ticket(key.split(":")[1])
@@ -86,7 +86,7 @@ def get_tickets(status_list: list, sort_key="time_created"):
             continue
         if ticket["status"] in status_list:
             tickets.append(ticket)
-    tickets.sort(key=lambda x: x[sort_key])
+    tickets.sort(key=lambda x: x[sort_key], reverse=reverse)
     return tickets
 
 

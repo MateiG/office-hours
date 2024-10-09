@@ -10,7 +10,7 @@ from app import app, constants, users, utils
 def admin_page():
     in_progress_tickets = utils.get_tickets(["in progress"])
     waiting_tickets = utils.get_tickets(["waiting"])
-    resolved_tickets = utils.get_tickets(["resolved"], sort_key="time_resolved")[:5]
+    resolved_tickets = utils.get_tickets(["resolved"], sort_key="time_resolved", reverse=True)[:5]
     return render_template(
         "admin.html",
         name=users[session["user"]["email"]]["name"],
