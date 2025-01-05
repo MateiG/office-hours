@@ -30,4 +30,3 @@
    sudo ufw allow 5000
    python run.py
    ```
-10. 
