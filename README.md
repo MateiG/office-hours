@@ -30,7 +30,6 @@
    sudo ufw allow 5000
    python run.py
    ```
-10. 
 
 ## Features and future development
 slack integration
