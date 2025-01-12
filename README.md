@@ -1,7 +1,7 @@
 # Office Hours
 
 ## Getting Started
-1. Create a Droplet on DigitalOcean. Select the following specs: 2 vCPUs, 2GB RAM, 60GB SSD.
+1. Create a Droplet on DigitalOcean. Select the following specs: 1 vCPUs, 1GB RAM, 25GB SSD. Should cost $6/month.
 2. SSH into the Droplet, and run:
    ```
    sudo apt update
@@ -30,3 +30,51 @@
    sudo ufw allow 5000
    python run.py
    ```
+10. 
+
+## Features and future development
+slack integration
+authentication (staff and student)
+- send email code auth
+open/close queue
+highlight their ticket
+list of tickets being helped vs just tickets
+instructions everywhere
+prepopulated zoom links for online tickets
+time started helping
+time resolved
+List ui
+Settings toggles
+Central zoom
+Notifications
+Analytics (time per ticket, assignments)
+Tags (conceptual, debug, clarification, lecture)
+How many tickets there are, which ticket number you are
+Indicate interest ahead of time
+
+add zoom link to student/admin pages
+
+ticket:
+- email
+- assignment (from a known list eg Homework 1 … 10, Project 1 … 5
+- description
+- location (one of Online, Inside Soda 341B, Outside Soda 341B)
+- status (one of waiting, in progress, complete, deleted)
+- helped by
+- time created
+- time resolved
+
+
+rate limiting for login
+Proper run script
+recently completed tickets
+confirmation for actions
+highlight your own ticket
+portal to upload roster
+cron job (calendar)
+auto refresh
+error -> no send email, verification page still works
+slack (if person is away)
+Other topic oh queue
+time ago in saved ticket
+analytics page

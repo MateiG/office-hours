@@ -9,8 +9,6 @@ from email.mime.text import MIMEText
 from dotenv import load_dotenv
 from redis import Redis
 
-from app import constants
-
 redis_client = Redis(host="localhost", port=6379, db=0, decode_responses=True)
 
 load_dotenv()
