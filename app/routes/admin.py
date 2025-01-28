@@ -62,7 +62,7 @@ def assign_ticket():
         student_body = f"Your ticket is now being helped by {USERS[admin_email]['name']} ({admin_email}). \nJoin the Zoom meeting at {ZOOM_LINK}."
         utils.send_email(ticket["email"], subject, student_body)
 
-    flash(f"{ticket["name"]}'s ticket has been assigned to you.")
+    flash(f"{ticket['name']}'s ticket has been assigned to you.")
     return redirect(url_for("admin.index"))
 
 
@@ -78,7 +78,7 @@ def resolve_ticket():
     with open(ticket_path, "w") as f:
         json.dump(ticket, f, indent=4)
 
-    flash(f"{ticket["name"]}'s ticket has been resolved.")
+    flash(f"{ticket['name']}'s ticket has been resolved.")
     return redirect(url_for("admin.index"))
 
 
@@ -95,7 +95,7 @@ def unresolve_ticket():
     if os.path.exists(ticket_path):
         os.remove(ticket_path)
     
-    flash(f"{ticket["name"]}'s ticket has been unresolved.")
+    flash(f"{ticket['name']}'s ticket has been unresolved.")
     return redirect(url_for("admin.index"))
 
 
@@ -107,7 +107,7 @@ def requeue_ticket():
         flash("Ticket not found. It may have been deleted.")
         return redirect(url_for("admin.index"))
 
-    flash(f"{ticket["name"]}'s ticket has been requeued.")
+    flash(f"{ticket['name']}'s ticket has been requeued.")
     return redirect(url_for("admin.index"))
 
 @admin_bp.route("/delete_ticket", methods=["POST"])
